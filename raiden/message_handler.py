@@ -79,15 +79,18 @@ class RaidenMessageHandler(object):
             raise Exception("Unhandled message cmdid '{}'.".format(cmdid))
 
     def message_revealsecret(self, message):
-        secret = message.secret
+
+        secret = message.secret 
         sender = message.sender
 
+        # dispatch secret...
         self.raiden.greenlet_task_dispatcher.dispatch_message(
             message,
             message.hashlock,
         )
         self.raiden.register_secret(secret)
 
+        # receive, apply through event handler
         state_change = ReceiveSecretReveal(secret, sender)
         self.raiden.state_machine_event_handler.log_and_dispatch_to_all_tasks(state_change)
 

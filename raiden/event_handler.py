@@ -40,6 +40,7 @@ class StateMachineEventHandler(object):
         self.raiden = raiden
 
     def log_and_dispatch_to_all_tasks(self, state_change):
+        #  all other peers send *UDP* msgs to each other, IPs are registered on the smart contract...
         """Log a state change, dispatch it to all state managers and log generated events"""
         state_change_id = self.raiden.transaction_log.log(state_change)
         manager_lists = self.raiden.identifier_to_statemanagers.itervalues()
